@@ -7,5 +7,6 @@ namespace HealthSoft.Core.RepositoryInterfaces
     {
         Task<AppUser> CreateUserAccountAsync(CreateUserAccountDto request);
         Task<bool> DeleteUserAccountAsync(string userId);
+        Task<AppUser?> GetUserByIdAsync(string appUserId);
     }
 }

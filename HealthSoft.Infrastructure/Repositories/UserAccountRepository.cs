@@ -69,6 +69,11 @@ namespace HealthSoft.Infrastructure.Repositories
 
             return result.Succeeded;
         }
+
+        public async Task<AppUser?> GetUserByIdAsync(string appUserId)
+        {
+            return await userManager.FindByIdAsync(appUserId);
+        }
     }
 
 }
