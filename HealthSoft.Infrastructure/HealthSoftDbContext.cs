@@ -18,26 +18,6 @@ namespace HealthSoft.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<AppUser>()
-                .HasOne(a => a.Doctor)
-                .WithOne(d => d.AppUser)
-                .HasForeignKey<Doctor>(d => d.AppUserId);
-
-            modelBuilder.Entity<AppUser>()
-                .HasOne(a => a.Patient)
-                .WithOne(p => p.AppUser)
-                .HasForeignKey<Patient>(p => p.AppUserId);
-
-            modelBuilder.Entity<Doctor>()
-                .HasMany(d => d.Appointments)
-                .WithOne(a => a.Doctor)
-                .HasForeignKey(a => a.DoctorId);
-
-            modelBuilder.Entity<Patient>()
-                .HasMany(p => p.Appointments)
-                .WithOne(a => a.Patient)
-                .HasForeignKey(a => a.PatientId);
         }
     }
 }
