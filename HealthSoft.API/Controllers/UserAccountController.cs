@@ -21,5 +21,19 @@ namespace HealthSoft.API.Controllers
                 return StatusCode(500, new { ex.Message });
             }
         }
+
+        [HttpDelete("{userAccountId}")]
+        public async Task<IActionResult> DeleteUserAccount(string userAccountId)
+        {
+            try
+            {
+                bool isAccountDeleted = await accountRepository.DeleteUserAccountAsync(userAccountId);
+                return Ok(new { isAccountDeleted });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message });
+            }
+        }
     }
 }
