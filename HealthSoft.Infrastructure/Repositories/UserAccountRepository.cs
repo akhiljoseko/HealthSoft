@@ -1,11 +1,12 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
 using HealthSoft.Core.Entities;
-using HealthSoft.Core.Interfaces;
+using HealthSoft.Core.RepositoryInterfaces;
 using Microsoft.AspNetCore.Identity;
+using System.Data;
 
 namespace HealthSoft.Infrastructure.Repositories
 {
-    internal class UserAccountRepository(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager) : IUserAccountRepository
+    public class UserAccountRepository(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager) : IUserAccountRepository
     {
         public async Task<AppUser> CreateUserAccountAsync(CreateUserAccountDto request)
         {
@@ -36,6 +37,21 @@ namespace HealthSoft.Infrastructure.Repositories
             {
                 throw new Exception(string.Join("; ", roleResult.Errors.Select(e => e.Description)));
             }
+
+            //switch (request.Role.ToLower())
+            //{
+            //    case "doctor":
+            //        await _doctorService.AddDoctorAsync(new Doctor { UserId = createdUser.Id, /* other doctor details */ });
+            //        break;
+            //    case "patient":
+            //        await _patientService.AddPatientAsync(new Patient { UserId = createdUser.Id, /* other patient details */ });
+            //        break;
+            //    case "admin":
+            //        // If Admin has special handling, do it here or just add role to user
+            //        break;
+            //    default:
+            //        throw new ArgumentException("Invalid role specified.");
+            //}
 
             return user;
         }

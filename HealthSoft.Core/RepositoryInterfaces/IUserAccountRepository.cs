@@ -1,7 +1,7 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
 using HealthSoft.Core.Entities;
 
-namespace HealthSoft.Core.Interfaces
+namespace HealthSoft.Core.RepositoryInterfaces
 {
     public interface IUserAccountRepository
     {
