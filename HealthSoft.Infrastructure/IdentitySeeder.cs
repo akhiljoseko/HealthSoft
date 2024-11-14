@@ -34,6 +34,7 @@ namespace HealthSoft.Infrastructure
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
+                    FirstName = "Admin",
                     EmailConfirmed = true
                 };
 
