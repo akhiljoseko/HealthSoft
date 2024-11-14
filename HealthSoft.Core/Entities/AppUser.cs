@@ -4,7 +4,7 @@ namespace HealthSoft.Core.Entities
 {
     public class AppUser : IdentityUser
     {
-        public virtual Doctor? Doctor { get; set; }
-        public virtual Patient? Patient { get; set; }
+        public required string FirstName { get; set; }
+        public string? LastName { get; set; }
     }
 }
