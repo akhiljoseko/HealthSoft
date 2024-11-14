@@ -23,17 +23,17 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 
-// Seeding Admin user
-//using var scope = app.Services.CreateScope();
-//var services = scope.ServiceProvider;
-//try
-//{
-//    await IdentitySeeder.SeedAsync(services);
-//}
-//catch (Exception ex)
-//{
-//    Console.WriteLine(ex.Message);
-//}
+//Seeding Admin user
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    await IdentitySeeder.SeedAsync(services);
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
 
 
 // Configure the HTTP request pipeline.
