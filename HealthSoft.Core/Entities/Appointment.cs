@@ -4,13 +4,15 @@
     {
         public DateTime AppointmentDateTime { get; set; }
         public required string ReasonForVisit { get; set; }
+        public required string Status { get; set; }
 
-        // Foreign keys and navigation properties
-        public int DoctorId { get; set; }
-        public required Doctor Doctor { get; set; }
+        // Foreign keys
+        public required int DoctorId { get; set; }
+        public required int PatientId { get; set; }
 
-        public int PatientId { get; set; }
-        public required Patient Patient { get; set; }
+        // Navigation properties
+        public virtual  Doctor? Doctor { get; set; }
+        public virtual  Patient? Patient { get; set; }
     }
 
 }
