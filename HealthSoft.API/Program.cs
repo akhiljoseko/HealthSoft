@@ -13,6 +13,11 @@ builder.Services.AddDbContext<HealthSoftDbContext>(options => options.UseSqlServ
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<HealthSoftDbContext>();
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"))
+    .AddPolicy("DoctorOrAdmin", policy => policy.RequireRole("Doctor", "Admin"))
+    .AddPolicy("PatientOrAdmin", policy => policy.RequireRole("Patient", "Admin"));
+
 // Add services to the container.
 builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();

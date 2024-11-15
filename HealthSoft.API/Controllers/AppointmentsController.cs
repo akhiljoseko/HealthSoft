@@ -1,5 +1,6 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
 using HealthSoft.Core.RepositoryInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSoft.Api.Controllers
@@ -10,6 +11,7 @@ namespace HealthSoft.Api.Controllers
     {
 
         [HttpPost("Book")]
+        [Authorize("AdminOnly")]
         public async Task<IActionResult> BookAppointment([FromBody] BookAppointmentRequestDto requestDto)
         {
             
@@ -25,6 +27,7 @@ namespace HealthSoft.Api.Controllers
         }
 
         [HttpDelete("Cancel/{id}")]
+        [Authorize("AdminOnly")]
         public async Task<IActionResult> CancelAppointment(int id)
         {
             try
@@ -58,6 +61,7 @@ namespace HealthSoft.Api.Controllers
 
         
         [HttpGet("Doctor/{doctorId}")]
+        [Authorize("DoctorOrAdmin")]
         public async Task<IActionResult> GetAppointmentsByDoctorId(int doctorId)
         {
             try

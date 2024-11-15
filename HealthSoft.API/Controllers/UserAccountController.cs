@@ -1,10 +1,12 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
 using HealthSoft.Core.RepositoryInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSoft.API.Controllers
 {
     [Route("api/V1/account")]
+    [Authorize(Policy = "AdminOnly")]
     [ApiController]
     public class UserAccountController(IUserAccountRepository accountRepository) : ControllerBase
     {
