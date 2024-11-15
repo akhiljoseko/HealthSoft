@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSoft.API.Controllers
 {
-    [Route("api/v1/account")]
+    [Route("api/V1/account")]
     [ApiController]
     public class UserAccountController(IUserAccountRepository accountRepository) : ControllerBase
     {
