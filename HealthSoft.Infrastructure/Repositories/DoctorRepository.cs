@@ -45,8 +45,7 @@ namespace HealthSoft.Infrastructure.Repositories
             {
                 throw new ArgumentException("Failed to delete user account");
             }
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync() > 0;  
         }
 
         public async Task<IEnumerable<Doctor>> GetAllDoctorsAsync()
