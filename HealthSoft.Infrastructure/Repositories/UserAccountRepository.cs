@@ -38,21 +38,7 @@ namespace HealthSoft.Infrastructure.Repositories
                 throw new Exception(string.Join("; ", roleResult.Errors.Select(e => e.Description)));
             }
 
-            //switch (request.Role.ToLower())
-            //{
-            //    case "doctor":
-            //        await _doctorService.AddDoctorAsync(new Doctor { UserId = createdUser.Id, /* other doctor details */ });
-            //        break;
-            //    case "patient":
-            //        await _patientService.AddPatientAsync(new Patient { UserId = createdUser.Id, /* other patient details */ });
-            //        break;
-            //    case "admin":
-            //        // If Admin has special handling, do it here or just add role to user
-            //        break;
-            //    default:
-            //        throw new ArgumentException("Invalid role specified.");
-            //}
-
+            
             return user;
         }
 
