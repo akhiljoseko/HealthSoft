@@ -1,9 +1,10 @@
-using HealthSoft.Core.Entities;
+﻿using HealthSoft.Core.Entities;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.Infrastructure.Repositories;
 using HealthSoft.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using HealthSoft.API.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 // Add services to the container.
 builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
