@@ -12,8 +12,8 @@ namespace HealthSoft.Infrastructure.Repositories
 
         public async Task<Doctor> AddDoctorAsync(AddDoctorRequestDto request)
         {
-            // Ensure that the user exists or create the user first
-            AppUser appUser = await _userAccountRepository.GetUserByIdAsync(request.AppUserId) ?? throw new ArgumentException("User not found.");
+            
+            AppUser appUser = await _userAccountRepository.CreateUserAccountAsync(request);
 
             var doctor = new Doctor
             {
@@ -27,7 +27,7 @@ namespace HealthSoft.Infrastructure.Repositories
                 LicenseNumber = request.LicenseNumber,
                 EmploymentStartDate = request.EmploymentStartDate,
                 EmploymentEndDate = request.EmploymentEndDate,
-                AppUserId = request.AppUserId, 
+                AppUserId = appUser.Id, 
                 AppUser = appUser,
             };
 
@@ -39,12 +39,12 @@ namespace HealthSoft.Infrastructure.Repositories
         public async Task<bool> DeleteDoctorAsync(int doctorId)
         {
             var doctor = await _context.Doctors.FindAsync(doctorId) ?? throw new ArgumentException("Doctor not found.");
+            _context.Doctors.Remove(doctor);
             var isAppUserRemoved = await _userAccountRepository.DeleteUserAccountAsync(doctor.AppUserId);
             if (!isAppUserRemoved) 
             {
                 throw new ArgumentException("Failed to delete user account");
             }
-            _context.Doctors.Remove(doctor);
             await _context.SaveChangesAsync();
             return true;
         }
