@@ -1,0 +1,58 @@
+﻿@model HealthSoft.WebApp.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HealthSoft</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HealthSoft.WebApp.styles.css" asp-append-version="true" />
+</head>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+    <div class="container bg-white shadow-lg rounded-3 overflow-hidden" style="max-width: 900px; height: 70%;">
+        <div class="row h-100">
+            <!-- Left Section -->
+            <div class="col-md-6 p-5 d-flex flex-column justify-content-center">
+                <h1 class="mb-4">Welcome Back</h1>
+
+                <form method="post" asp-controller="Login" asp-action="Index" >
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input name="EmailId" id="email" type="email" class="form-control" placeholder="eg: johnluke@email.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input name="Password" type="password" class="form-control" required>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input type="checkbox" class="form-check-input" id="keepLoggedIn">
+                        <label class="form-check-label" for="keepLoggedIn">Keep me logged in</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Log In</button>
+                </form>
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="#" class="text-decoration-none">Forgot password?</a>
+                </div>
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <br />
+                    <div class="alert alert-danger text-center">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+            </div>
+            <!-- Right Section -->
+            <div class="col-md-6 bg-secondary text-white d-flex flex-column justify-content-center align-items-center">
+                <img src="/images/logo.png" alt="HealthSoft Logo" style="width:150px; height:auto"/>
+            </div>
+        </div>
+    </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+</body>
