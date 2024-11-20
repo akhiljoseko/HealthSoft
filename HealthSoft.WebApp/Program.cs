@@ -1,7 +1,21 @@
+using HealthSoft.Core.Entities;
+using HealthSoft.Core.RepositoryInterfaces;
+using HealthSoft.Infrastructure;
+using HealthSoft.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'HealthSoftDbContextConnection' not found.");
+builder.Services.AddDbContext<HealthSoftDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<HealthSoftDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
 var app = builder.Build();
 
@@ -22,6 +36,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();
