@@ -26,12 +26,12 @@ namespace HealthSoft.Infrastructure.Repositories
             var authClaims = new List<Claim>
         {
             new(ClaimTypes.Name, user.UserName??""),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            //new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
             authClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            var token = GetToken(authClaims);
+            //var token = GetToken(authClaims);
 
             return new LoginResponseDto
             {
