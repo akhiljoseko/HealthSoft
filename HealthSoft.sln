@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSoft.Core", "HealthSo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSoft.Infrastructure", "HealthSoft.Infrastructure\HealthSoft.Infrastructure.csproj", "{8707A513-77CC-4D3E-B48E-3441F43C95A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSoft.WebApp", "HealthSoft.WebApp\HealthSoft.WebApp.csproj", "{6E6E3832-4A70-494B-BFFC-A1989E617FCA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSoft.API", "HealthSoft.API\HealthSoft.API.csproj", "{C9B3841C-9B62-4F3D-ADFA-B5311F9D9826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSoft.API", "HealthSoft.API\HealthSoft.API.csproj", "{C9B3841C-9B62-4F3D-ADFA-B5311F9D9826}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{8707A513-77CC-4D3E-B48E-3441F43C95A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8707A513-77CC-4D3E-B48E-3441F43C95A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8707A513-77CC-4D3E-B48E-3441F43C95A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E6E3832-4A70-494B-BFFC-A1989E617FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E6E3832-4A70-494B-BFFC-A1989E617FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E6E3832-4A70-494B-BFFC-A1989E617FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E6E3832-4A70-494B-BFFC-A1989E617FCA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9B3841C-9B62-4F3D-ADFA-B5311F9D9826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9B3841C-9B62-4F3D-ADFA-B5311F9D9826}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9B3841C-9B62-4F3D-ADFA-B5311F9D9826}.Release|Any CPU.ActiveCfg = Release|Any CPU
