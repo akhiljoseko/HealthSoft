@@ -59,7 +59,7 @@ namespace HealthSoft.Infrastructure.Repositories
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public async Task<Doctor> UpdateDoctorDetailsAsync(AddDoctorRequestDto requestDto, int doctorId)
+        public async Task<Doctor> UpdateDoctorDetailsAsync(EditDoctorRequestDto requestDto, int doctorId)
         {
             var doctor = await _context.Doctors
                 .FirstOrDefaultAsync(d => d.Id == doctorId) ?? throw new ArgumentException("Doctor not found.");
@@ -69,7 +69,6 @@ namespace HealthSoft.Infrastructure.Repositories
             doctor.Gender = requestDto.Gender;
             doctor.DateOfBirth = requestDto.DateOfBirth;
             doctor.ContactNumber = requestDto.ContactNumber;
-            doctor.Email = requestDto.Email;
             doctor.Specialization = requestDto.Specialization;
             doctor.LicenseNumber = requestDto.LicenseNumber;
             doctor.EmploymentStartDate = requestDto.EmploymentStartDate;

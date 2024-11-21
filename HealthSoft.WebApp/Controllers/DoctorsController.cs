@@ -67,18 +67,49 @@ namespace HealthSoft.WebApp.Controllers
         }
 
         // GET: DoctorsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditAsync(int id)
         {
-            return View();
+            var doctor = await doctorRepository.GetDoctorByIdAsync(id);
+            if (doctor == null)
+            {
+                return View();
+            }
+            var addDoctorModel = new AddDoctorModel
+            {
+                Email = doctor.Email,
+                Role = "Doctor",
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                Gender = doctor.Gender,
+                ContactNumber = doctor.ContactNumber,
+                Specialization = doctor.Specialization,
+                LicenseNumber = doctor.LicenseNumber,
+                EmploymentStartDate = doctor.EmploymentStartDate,
+                EmploymentEndDate = doctor.EmploymentEndDate,
+            };
+            return View(addDoctorModel);
         }
 
         // POST: DoctorsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, AddDoctorModel model)
         {
             try
             {
+                var editDocorRequest = new EditDoctorRequestDto
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Gender = model.Gender,
+                    ContactNumber = model.ContactNumber,
+                    Specialization = model.Specialization,
+                    LicenseNumber = model.LicenseNumber,
+                    EmploymentStartDate = model.EmploymentStartDate,
+                    EmploymentEndDate = model.EmploymentEndDate,
+                };
+
+                _ = await doctorRepository.UpdateDoctorDetailsAsync( editDocorRequest, id);
                 return RedirectToAction(nameof(Index));
             }
             catch
