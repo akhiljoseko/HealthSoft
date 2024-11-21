@@ -16,4 +16,8 @@
     <ProjectReference Include="..\HealthSoft.Infrastructure\HealthSoft.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
 </Project>
