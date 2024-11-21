@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<HealthSoft.WebApp.Models.AppointmentsModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Appointments";
     Layout = "~/Views/Shared/_NavbarLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Active Appointments</h1>
 
 <p>
     <a asp-action="Add">Create New</a>
@@ -38,9 +38,7 @@
                 @Html.DisplayFor(modelItem => item.DoctorName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Cancel", "Cancel", new {  id=item.Id })
             </td>
         </tr>
 }

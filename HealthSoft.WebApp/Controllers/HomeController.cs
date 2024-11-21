@@ -57,6 +57,16 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         }
         return View(createAppointmentModel);
     }
+
+    public async Task<IActionResult> Cancel(int? id)
+    {
+        if(id == null || id < 1)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        _ = await appointmentRepository.CancelAppointment((int)id);
+        return RedirectToAction("Index", "Home");
+    }
     public IActionResult Privacy()
     {
         return View();
