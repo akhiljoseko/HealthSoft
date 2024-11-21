@@ -29,6 +29,9 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         {
             Id = dr.Id,
             Name = $"{dr.FirstName} {dr.LastName}",
+            Contact = dr.ContactNumber,
+            Email = dr.Email,
+            Gender = dr.Gender,
         });
 
         var patients = await patientRepository.GetAllPatientsAsync();
