@@ -18,30 +18,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new ArgumentException("Invalid Jwt Key");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? throw new ArgumentException("Invalid Jwt Issuer");
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtIssuer,
-        ValidAudience = jwtIssuer,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-    };
-});
-
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"))
-    .AddPolicy("DoctorOrAdmin", policy => policy.RequireRole("Doctor", "Admin"))
-    .AddPolicy("PatientOrAdmin", policy => policy.RequireRole("Patient", "Admin"));
-
 // Add services to the container.
 builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();

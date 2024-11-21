@@ -38,7 +38,6 @@ namespace HealthSoft.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateDoctorAccount([FromBody] AddDoctorRequestDto requestDto)
         {
             try
@@ -52,7 +51,6 @@ namespace HealthSoft.API.Controllers
             }
         }     
         [HttpPut("{id}")]
-        [Authorize(Policy = "DoctorOrAdmin")]
         public async Task<IActionResult> UpdateDoctorDetails(int id, [FromBody] AddDoctorRequestDto requestDto)
         {
             try
@@ -68,7 +66,6 @@ namespace HealthSoft.API.Controllers
 
         
         [HttpDelete("{id}")]
-        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteDoctor(int id)
         {
             try
