@@ -24,11 +24,6 @@ namespace HealthSoft.WebApp.Controllers
             return View(mappedDoctors);
         }
 
-        // GET: DoctorsController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: DoctorsController/Create
         public ActionResult Create()
@@ -119,24 +114,11 @@ namespace HealthSoft.WebApp.Controllers
         }
 
         // GET: DoctorsController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            _ = await doctorRepository.DeleteDoctorAsync(id);
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: DoctorsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

@@ -50,7 +50,6 @@ namespace HealthSoft.Infrastructure.Repositories
             {
                 return false;
             }
-
             var result = await userManager.DeleteAsync(user);
 
             return result.Succeeded;
