@@ -41,6 +41,9 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         {
             Id = pt.Id,
             Name = $"{pt.FirstName} {pt.LastName}",
+            Contact = pt.ContactNumber,
+            Email = pt.Email,
+            Gender = pt.Gender,
         });
         return View();
     }

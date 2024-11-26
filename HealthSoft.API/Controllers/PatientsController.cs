@@ -51,7 +51,7 @@ namespace HealthSoft.API.Controllers
             }
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatepatientDetails(int id, [FromBody] AddPatientRequestDto requestDto)
+        public async Task<IActionResult> UpdatepatientDetails(int id, [FromBody] EditPatientRequestDto requestDto)
         {
             try
             {
