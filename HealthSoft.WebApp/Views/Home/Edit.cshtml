@@ -29,7 +29,7 @@
     <select class="form-control" id="PatientId" name="PatientId" required>
         @foreach (var patient in ViewBag.Patients)
         {
-                <option value="@patient.Id" selected=@(patient.Id == Model.PatientId ? "selected='selected'" : "")>@patient.Name</option>
+            <option value="@patient.Id" selected=@(patient.Id == Model.PatientId ? "selected='selected'" : "")>@patient.Name</option>
         }
     </select>
 </div>
