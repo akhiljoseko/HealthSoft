@@ -45,7 +45,16 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+                    @Html.ActionLink(
+                             "Delete",
+                             "Delete",
+                             new { id = item.Id },
+                             new
+                             {
+                                 @class = "delete-link",
+                                 onclick = $"return confirm('Are you sure you want to delete Dr. {item.Name}?')"
+                             }
+                             )
             </td>
         </tr>
 }
