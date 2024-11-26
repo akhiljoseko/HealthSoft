@@ -2,6 +2,7 @@ using HealthSoft.Core.Entities;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.Infrastructure;
 using HealthSoft.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,9 +11,22 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'HealthSoftDbContextConnection' not found.");
 builder.Services.AddDbContext<HealthSoftDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<HealthSoftDbContext>();
+    .AddEntityFrameworkStores<HealthSoftDbContext>()
+    .AddDefaultTokenProviders();
 
-// Add services to the container.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.Cookie.Name = "Cookies";
+    });
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login"; 
+});
+
+
+//Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
@@ -36,7 +50,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",

@@ -1,6 +1,9 @@
 ﻿using HealthSoft.Core.DTOs.ResponseDTOs;
 using HealthSoft.Core.Entities;
 using HealthSoft.Core.RepositoryInterfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -10,8 +13,15 @@ using System.Text;
 
 namespace HealthSoft.Infrastructure.Repositories
 {
-    public class AuthenticationRepository(UserManager<AppUser> userManager, IConfiguration configuration) : IAuthenticationRepository
+    public class AuthenticationRepository(UserManager<AppUser> userManager,  IHttpContextAccessor httpContext, IConfiguration configuration) : IAuthenticationRepository
     {
+        public async Task<bool> Logout()
+        {
+            await httpContext.HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            return true;
+        }
+
         public async Task<LoginResponseDto> PasswordLogin(LoginRequestDto request)
         {
             var user = await userManager.FindByEmailAsync(request.Email);
@@ -21,17 +31,24 @@ namespace HealthSoft.Infrastructure.Repositories
                     IsSuccess = false,
                     ErrorMessage = "Invalid Email or Password",
                 };
+            var userRoles = await userManager.GetRolesAsync(user);
 
-            var roles = await userManager.GetRolesAsync(user);
-            var authClaims = new List<Claim>
+            var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, user.UserName??""),
-            //new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new(ClaimTypes.Name, user.Email??"")
         };
 
-            authClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
-            //var token = GetToken(authClaims);
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await httpContext.HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
 
             return new LoginResponseDto
             {
@@ -46,7 +63,7 @@ namespace HealthSoft.Infrastructure.Repositories
             var jwtKey = configuration["Jwt:Key"];
             var jwtIssuer = configuration["Jwt:Issuer"];
 
-            if(jwtKey == null || jwtIssuer == null)
+            if (jwtKey == null || jwtIssuer == null)
             {
                 throw new ArgumentNullException("Invalid JWT crednetials");
             }

@@ -36,5 +36,16 @@ namespace HealthSoft.WebApp.Controllers
             }
             return View(loginModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            bool didSignedOut = await authenticationRepository.Logout();
+            if (didSignedOut)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

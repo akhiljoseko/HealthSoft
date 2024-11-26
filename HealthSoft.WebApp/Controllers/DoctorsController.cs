@@ -1,8 +1,6 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
-using HealthSoft.Core.Entities;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.WebApp.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSoft.WebApp.Controllers

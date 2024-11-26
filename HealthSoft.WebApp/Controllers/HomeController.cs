@@ -6,7 +6,7 @@ using HealthSoft.Core.DTOs.RequestDTOs;
 
 namespace HealthSoft.WebApp.Controllers;
 
-public class HomeController(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository) : Controller
+public class HomeController(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository, IHttpContextAccessor httpContextAccessor) : Controller
 {
     
 
@@ -19,6 +19,8 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
             DoctorName = $"{ap?.Doctor?.FirstName} {ap?.Doctor?.LastName}",
             PatientName = $"{ap?.Patient?.FirstName} {ap?.Patient?.LastName}"
         });
+
+        Console.Write("Authentication status: " + httpContextAccessor.HttpContext.User.Identity.IsAuthenticated);
         return View(mappedModels);
     }
 
