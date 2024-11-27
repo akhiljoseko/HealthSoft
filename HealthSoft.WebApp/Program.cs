@@ -2,7 +2,6 @@ using HealthSoft.Core.Entities;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.Infrastructure;
 using HealthSoft.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,12 +12,6 @@ builder.Services.AddDbContext<HealthSoftDbContext>(options => options.UseSqlServ
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<HealthSoftDbContext>()
     .AddDefaultTokenProviders();
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-    {
-        options.Cookie.Name = "Cookies";
-    });
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

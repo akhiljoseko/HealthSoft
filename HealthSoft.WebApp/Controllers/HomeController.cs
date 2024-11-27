@@ -3,15 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using HealthSoft.WebApp.Models;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.Core.DTOs.RequestDTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthSoft.WebApp.Controllers;
 
-public class HomeController(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository, IHttpContextAccessor httpContextAccessor) : Controller
+[Authorize(Roles ="Admin")]
+public class HomeController(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository) : Controller
 {
 
 
     public async Task<IActionResult> Index()
     {
+        var user = HttpContext.User.Claims.ToList();
         var appointments = await appointmentRepository.GetAllAppointments();
         var mappedModels = appointments.Select(ap => new AppointmentsModel
         {
@@ -20,7 +23,6 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
             PatientName = $"{ap?.Patient?.FirstName} {ap?.Patient?.LastName}"
         });
 
-        Console.Write("Authentication status: " + httpContextAccessor.HttpContext.User.Identity.IsAuthenticated);
         return View(mappedModels);
     }
 

@@ -13,12 +13,17 @@ using System.Text;
 
 namespace HealthSoft.Infrastructure.Repositories
 {
-    public class AuthenticationRepository(UserManager<AppUser> userManager,  IHttpContextAccessor httpContext, IConfiguration configuration) : IAuthenticationRepository
+    public class AuthenticationRepository(
+        UserManager<AppUser> userManager,
+        IConfiguration configuration,
+        SignInManager<AppUser> signInManager,
+        IDoctorRepository doctorRepository,
+        IPatientRepository patientRepository
+        ) : IAuthenticationRepository
     {
         public async Task<bool> Logout()
         {
-            await httpContext.HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
+            await signInManager.SignOutAsync();
             return true;
         }
 
@@ -40,15 +45,27 @@ namespace HealthSoft.Infrastructure.Repositories
 
             foreach (var role in userRoles)
             {
+                if (role == "Doctor")
+                {
+                    int? doctorId = await doctorRepository.GetDoctorIdByUserIdAsync(user.Id);
+                    if (doctorId != null)
+                    {
+                        claims.Add(new Claim("actorId", (doctorId ?? 0).ToString()));
+                    }
+                }
+                if (role == "Patient")
+                {
+                    int? patientId = await patientRepository.GetPatientIdByUserIdAsync(user.Id);
+                    if (patientId != null)
+                    {
+                        claims.Add(new Claim("actorId", (patientId ?? 0).ToString()));
+                    }
+                }
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await httpContext.HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity));
+            await userManager.AddClaimsAsync(user, claims);
+            await signInManager.SignInAsync(user, new AuthenticationProperties { });
 
             return new LoginResponseDto
             {

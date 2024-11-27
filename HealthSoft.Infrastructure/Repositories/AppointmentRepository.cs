@@ -39,8 +39,9 @@ namespace HealthSoft.Infrastructure.Repositories
 
         public async Task<IEnumerable<Appointment>> GetAllAppointments()
         {
+
             return await context.Appointments
-                .Where(ap => ap.Status == "Booked")
+                .Where(ap => ap.Status != "Cancelled")
                 .Include(a => a.Doctor)
                 .Include(a => a.Patient)
                 .ToListAsync();
