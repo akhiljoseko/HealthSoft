@@ -4,6 +4,7 @@ using HealthSoft.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthSoft.Infrastructure.Migrations
 {
     [DbContext(typeof(HealthSoftDbContext))]
-    partial class HealthSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127075812_DeleteIsActiveTagFromDoctorEntity")]
+    partial class DeleteIsActiveTagFromDoctorEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

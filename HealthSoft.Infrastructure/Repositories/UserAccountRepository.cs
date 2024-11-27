@@ -6,7 +6,7 @@ using System.Data;
 
 namespace HealthSoft.Infrastructure.Repositories
 {
-    public class UserAccountRepository(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager) : IUserAccountRepository
+    public class UserAccountRepository(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, HealthSoftDbContext context) : IUserAccountRepository
     {
         public async Task<AppUser> CreateUserAccountAsync(CreateUserAccountDto request)
         {
@@ -50,9 +50,11 @@ namespace HealthSoft.Infrastructure.Repositories
             {
                 return false;
             }
-            var result = await userManager.DeleteAsync(user);
-
-            return result.Succeeded;
+            
+            user.IsDeleted = true;
+            user.DeletedDateTime = DateTime.UtcNow;
+            context.SaveChanges();
+            return true;
         }
 
         public async Task<AppUser?> GetUserByIdAsync(string appUserId)

@@ -29,7 +29,6 @@ namespace HealthSoft.Infrastructure.Repositories
                 EmploymentEndDate = request.EmploymentEndDate,
                 AppUserId = appUser.Id, 
                 AppUser = appUser,
-                IsActive = true,
             };
 
             _context.Doctors.Add(doctor);
@@ -40,13 +39,18 @@ namespace HealthSoft.Infrastructure.Repositories
         public async Task<bool> DeleteDoctorAsync(int doctorId)
         {
             var doctor = await _context.Doctors.FindAsync(doctorId) ?? throw new ArgumentException("Doctor not found.");
-            doctor.IsActive = false;
-            _context.Update(doctor);
+
             var isAppUserRemoved = await _userAccountRepository.DeleteUserAccountAsync(doctor.AppUserId);
-            if (!isAppUserRemoved) 
+            if (!isAppUserRemoved)
             {
                 throw new ArgumentException("Failed to delete user account");
             }
+
+            doctor.IsDeleted = true;
+            doctor.DeletedDateTime = DateTime.UtcNow;
+            _context.Update(doctor);
+
+            
             return await _context.SaveChangesAsync() > 0;  
         }
 

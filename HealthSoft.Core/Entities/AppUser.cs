@@ -6,5 +6,7 @@ namespace HealthSoft.Core.Entities
     {
         public required string FirstName { get; set; }
         public string? LastName { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedDateTime { get; set; }
     }
 }

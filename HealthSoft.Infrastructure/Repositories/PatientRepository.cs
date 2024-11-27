@@ -35,12 +35,15 @@ namespace HealthSoft.Infrastructure.Repositories
         public async Task<bool> DeletePatientAsync(int patientId)
         {
             var patient = await context.Patients.FindAsync(patientId) ?? throw new ArgumentException("Patient not found.");
-            context.Patients.Remove(patient);
             var isAppUserRemoved = await userAccountRepository.DeleteUserAccountAsync(patient.AppUserId);
             if (!isAppUserRemoved)
             {
                 throw new ArgumentException("Failed to delete user account");
             }
+
+            patient.IsDeleted = true;
+            patient.DeletedDateTime = DateTime.UtcNow;
+            
             return await context.SaveChangesAsync() > 0;
         }
 
