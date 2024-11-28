@@ -50,26 +50,7 @@ namespace HealthSoft.Api.Controllers
         {
             try
             {
-                var appointments = await appointmentRepository.GetAllAppointments();
-                return Ok(appointments);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        
-        [HttpGet("Doctor/{doctorId}")]
-        [Authorize("DoctorOrAdmin")]
-        public async Task<IActionResult> GetAppointmentsByDoctorId(int doctorId)
-        {
-            try
-            {
-                var appointments = await appointmentRepository.GetAppointmentsByDoctorId(doctorId);
-                if (!appointments.Any())
-                    return NotFound($"No appointments found for Doctor ID {doctorId}.");
-
+                var appointments = await appointmentRepository.GetAllAppointments("");
                 return Ok(appointments);
             }
             catch (Exception ex)
@@ -84,7 +65,7 @@ namespace HealthSoft.Api.Controllers
         {
             try
             {
-                var appointments = await appointmentRepository.GetAllAppointments();
+                var appointments = await appointmentRepository.GetAllAppointments("");
                 var appointment = appointments.FirstOrDefault(a => a.Id == id);
 
                 if (appointment == null)

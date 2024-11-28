@@ -10,5 +10,6 @@ namespace HealthSoft.Core.RepositoryInterfaces
         Task<Patient> AddPatientAsync(AddPatientRequestDto request);
         Task<Patient> UpdatePatientDetailsAsync(EditPatientRequestDto requestDto, int PatientId);
         Task<bool> DeletePatientAsync(int PatientId);
+        Task<int?> GetPatientIdByUserIdAsync(string id);
     }
 }

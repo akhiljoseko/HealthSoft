@@ -65,6 +65,15 @@ namespace HealthSoft.Infrastructure.Repositories
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
 
+        public async Task<int?> GetDoctorIdByUserIdAsync(string id)
+        {
+            return await _context.Doctors
+                .Where(doc => doc.AppUserId == id)
+                .Select(doc => doc.Id)
+                .FirstOrDefaultAsync();
+                
+        }
+
         public async Task<Doctor> UpdateDoctorDetailsAsync(EditDoctorRequestDto requestDto, int doctorId)
         {
             var doctor = await _context.Doctors

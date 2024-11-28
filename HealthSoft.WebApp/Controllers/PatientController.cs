@@ -1,10 +1,12 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSoft.WebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PatientController(IPatientRepository patientRepository) : Controller
     {
         // GET: PatientController
@@ -55,7 +57,7 @@ namespace HealthSoft.WebApp.Controllers
             {
                 return View(model);
             }
-                
+
         }
 
         // GET: PatientController/Edit/5
@@ -74,7 +76,7 @@ namespace HealthSoft.WebApp.Controllers
                 LastName = patient.LastName,
                 Gender = patient.Gender,
                 ContactNumber = patient.ContactNumber,
-                DateOfBirth= patient.DateOfBirth,
+                DateOfBirth = patient.DateOfBirth,
                 Address = patient.Address,
             };
             return View(editPatientRequest);
@@ -96,7 +98,7 @@ namespace HealthSoft.WebApp.Controllers
                     DateOfBirth = model.DateOfBirth,
                     Address = model.Address,
                 };
-                _ = await patientRepository.UpdatePatientDetailsAsync( editPatientModel, id);
+                _ = await patientRepository.UpdatePatientDetailsAsync(editPatientModel, id);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)

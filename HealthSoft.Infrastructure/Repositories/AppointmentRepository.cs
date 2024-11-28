@@ -1,11 +1,13 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
 using HealthSoft.Core.Entities;
 using HealthSoft.Core.RepositoryInterfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HealthSoft.Infrastructure.Repositories
 {
-    public class AppointmentRepository(HealthSoftDbContext context) : IAppointmentRepository
+    public class AppointmentRepository(HealthSoftDbContext context, UserManager<AppUser> userManager) : IAppointmentRepository
     {
         public async Task<Appointment> BookAppointment(BookAppointmentRequestDto requestDto)
         {
@@ -37,14 +39,54 @@ namespace HealthSoft.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<Appointment>> GetAllAppointments()
+        public async Task<IEnumerable<Appointment>> GetAllAppointments(string userId)
         {
+            var user = await userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"User not found with Id {userId}");
+            var roles = await userManager.GetRolesAsync(user);
+            if (roles.IsNullOrEmpty()) { return []; }
 
+            return roles.First() switch
+            {
+                "Admin" => await GetAppointmentsForAdmin(),
+                "Doctor" => await GetAppointmentForDoctor(user),
+                "Patient" => await GetAppointmentForPatient(user),
+                _ => [],
+            };
+        }
+
+        private async Task<IEnumerable<Appointment>> GetAppointmentsForAdmin()
+        {
             return await context.Appointments
-                .Where(ap => ap.Status != "Cancelled")
-                .Include(a => a.Doctor)
-                .Include(a => a.Patient)
-                .ToListAsync();
+                                   .Where(ap => ap.Status != "Cancelled")
+                                   .Include(a => a.Doctor)
+                                   .Include(a => a.Patient)
+                                   .ToListAsync();
+        }
+
+        private async Task<IEnumerable<Appointment>> GetAppointmentForDoctor(AppUser user)
+        {
+            int doctorId = await context.Doctors
+                .Where(doc => doc.AppUserId.Equals(user.Id))
+                .Select(doc => doc.Id)
+                .FirstOrDefaultAsync();
+            return await context.Appointments
+                   .Where(ap => !ap.Status.Equals("Cancelled") && ap.DoctorId.Equals(doctorId))
+                   .Include(a => a.Doctor)
+                   .Include(a => a.Patient)
+                   .ToListAsync();
+        }
+
+        private async Task<IEnumerable<Appointment>> GetAppointmentForPatient(AppUser user)
+        {
+            int patientId = await context.Patients
+                .Where(pat => pat.AppUserId.Equals(user.Id))
+                .Select(pat => pat.Id)
+                .FirstOrDefaultAsync();
+            return await context.Appointments
+                   .Where(ap => !ap.Status.Equals("Cancelled") && ap.PatientId.Equals(patientId))
+                   .Include(a => a.Doctor)
+                   .Include(a => a.Patient)
+                   .ToListAsync();
         }
 
         public async Task<Appointment?> GetAppointmentById(int id)
@@ -55,16 +97,7 @@ namespace HealthSoft.Infrastructure.Repositories
                 .Include(a => a.Patient)
                 .FirstOrDefaultAsync();
         }
-
-        public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorId(int doctorId)
-        {
-            return await context.Appointments
-                .Where(a => a.DoctorId == doctorId)
-                .Include(a => a.Doctor)
-                .Include(a => a.Patient)
-                .ToListAsync();
-        }
-
+       
         public async Task<bool> UpdateAppointment(BookAppointmentRequestDto requestDto, int id)
         {
             var appointment = await context.Appointments

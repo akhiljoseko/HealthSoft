@@ -4,18 +4,26 @@ using HealthSoft.WebApp.Models;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.Core.DTOs.RequestDTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using HealthSoft.Core.Entities;
 
 namespace HealthSoft.WebApp.Controllers;
 
-[Authorize(Roles ="Admin")]
-public class HomeController(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository) : Controller
+[Authorize]
+public class HomeController(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository, UserManager<AppUser> userManager) : Controller
 {
 
 
     public async Task<IActionResult> Index()
     {
-        var user = HttpContext.User.Claims.ToList();
-        var appointments = await appointmentRepository.GetAllAppointments();
+        string? userId = userManager.GetUserId(User);
+            if(userId == null)
+        {
+            return Unauthorized();
+        }
+
+        
+        var appointments = await appointmentRepository.GetAllAppointments(userId);
         var mappedModels = appointments.Select(ap => new AppointmentsModel
         {
             Id = ap.Id,
@@ -26,6 +34,7 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         return View(mappedModels);
     }
 
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Add()
     {
         var doctors = await doctorRepository.GetAllDoctorsAsync();
@@ -50,7 +59,7 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         return View();
     }
 
-
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Create(CreateAppointmentViewModel createAppointmentModel)
     {
         if (ModelState.IsValid)
@@ -68,7 +77,7 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         return View(createAppointmentModel);
     }
 
-
+    [Authorize(Roles ="Admin")]
     public async Task<ActionResult> Edit(int id)
     {
         var doctors = await doctorRepository.GetAllDoctorsAsync();
@@ -105,6 +114,7 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         return View(editAppointmentModel);
     }
 
+    [Authorize(Roles ="Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Edit(int id, CreateAppointmentViewModel model)
@@ -128,6 +138,7 @@ public class HomeController(IAppointmentRepository appointmentRepository, IDocto
         }
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Cancel(int? id)
     {
         if (id == null || id < 1)

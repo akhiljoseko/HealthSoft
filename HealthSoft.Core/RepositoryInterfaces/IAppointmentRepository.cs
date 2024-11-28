@@ -7,9 +7,8 @@ namespace HealthSoft.Core.RepositoryInterfaces
     {
         Task<Appointment> BookAppointment(BookAppointmentRequestDto requestDto);
         Task<bool> CancelAppointment(int appointmentId);
-        Task<IEnumerable<Appointment>> GetAllAppointments();
+        Task<IEnumerable<Appointment>> GetAllAppointments(string userId);
         Task<Appointment?> GetAppointmentById(int id);
-        Task<IEnumerable<Appointment>> GetAppointmentsByDoctorId(int doctorId);
         Task<bool> UpdateAppointment(BookAppointmentRequestDto updateAppointmentRequest, int id);
     }
 }

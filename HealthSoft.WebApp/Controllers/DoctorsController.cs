@@ -1,10 +1,12 @@
 ﻿using HealthSoft.Core.DTOs.RequestDTOs;
 using HealthSoft.Core.RepositoryInterfaces;
 using HealthSoft.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthSoft.WebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DoctorsController(IDoctorRepository doctorRepository) : Controller
     {
         // GET: DoctorsController
@@ -104,7 +106,7 @@ namespace HealthSoft.WebApp.Controllers
                     EmploymentEndDate = model.EmploymentEndDate,
                 };
 
-                _ = await doctorRepository.UpdateDoctorDetailsAsync( editDocorRequest, id);
+                _ = await doctorRepository.UpdateDoctorDetailsAsync(editDocorRequest, id);
                 return RedirectToAction(nameof(Index));
             }
             catch

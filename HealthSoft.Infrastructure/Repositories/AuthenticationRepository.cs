@@ -45,22 +45,6 @@ namespace HealthSoft.Infrastructure.Repositories
 
             foreach (var role in userRoles)
             {
-                if (role == "Doctor")
-                {
-                    int? doctorId = await doctorRepository.GetDoctorIdByUserIdAsync(user.Id);
-                    if (doctorId != null)
-                    {
-                        claims.Add(new Claim("actorId", (doctorId ?? 0).ToString()));
-                    }
-                }
-                if (role == "Patient")
-                {
-                    int? patientId = await patientRepository.GetPatientIdByUserIdAsync(user.Id);
-                    if (patientId != null)
-                    {
-                        claims.Add(new Claim("actorId", (patientId ?? 0).ToString()));
-                    }
-                }
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
